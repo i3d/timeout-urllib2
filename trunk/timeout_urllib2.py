@@ -72,14 +72,25 @@ from urllib2 import HTTPSHandler as _HS
 
 
 def sethttptimeout(timeout):
+  """Use TimeoutHTTPHandler and set the timeout value.
+  
+  Args:
+    timeout: the socket connection timeout value.
+  """
   opener = urllib2.build_opener(TimeoutHTTPHandler(timeout))
   urllib2.install_opener(opener)
 
 def sethttpstimeout(timeout):
+  """Use TimeoutHTTPSHandler and set the timeout value.
+
+  Args:
+    timeout: the socket connection timeout value.
+  """
   opener = urllib2.build_opener(TimeoutHTTPSHandler(timeout))
   urllib2.install_opener(opener)
 
 def reset():
+  """Restore to use default urllib2 openers."""
   urllib2.install_opener(urllib2.build_opener())
 
 def _clear(sock):
