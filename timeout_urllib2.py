@@ -77,8 +77,12 @@ def sethttptimeout(timeout):
   Args:
     timeout: the socket connection timeout value.
   """
-  opener = urllib2.build_opener(TimeoutHTTPHandler(timeout))
-  urllib2.install_opener(opener)
+  if _under_26():
+    opener = urllib2.build_opener(TimeoutHTTPHandler(timeout))
+    urllib2.install_opener(opener)
+  else:
+    raise Error("This python version has timeout builtin")
+
 
 def sethttpstimeout(timeout):
   """Use TimeoutHTTPSHandler and set the timeout value.
@@ -86,16 +90,29 @@ def sethttpstimeout(timeout):
   Args:
     timeout: the socket connection timeout value.
   """
-  opener = urllib2.build_opener(TimeoutHTTPSHandler(timeout))
-  urllib2.install_opener(opener)
+  if _under_26():
+    opener = urllib2.build_opener(TimeoutHTTPSHandler(timeout))
+    urllib2.install_opener(opener)
+  else:
+    raise Error("This python version has timeout builtin")
+
 
 def reset():
   """Restore to use default urllib2 openers."""
   urllib2.install_opener(urllib2.build_opener())
 
+
 def _clear(sock):
   sock.close()
   return None
+
+
+def _under_26():
+  import sys
+  if sys.version_info[0] < 2: return True
+  if sys.version_info[0] == 2:
+    return sys.version_info[1] < 6
+  return False
 
 
 class Error(Exception): pass
