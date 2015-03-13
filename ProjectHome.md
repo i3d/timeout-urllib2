@@ -1,0 +1,1 @@
+There isn't an easy way to manage connection timeouts per protocol/connection when using python version < 2.6. This module provides some basic classes to enable timeout juggling per protocol or connection.
